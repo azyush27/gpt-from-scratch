@@ -121,7 +121,7 @@ print(logits.shape)
 print(loss)
 
 idx = torch.zeros((1,1) , dtype = torch.long )
-print("hello world")
+
 print(decode(m.generate(idx = torch.zeros((1,1),dtype=torch.long) , max_new_tokens = 100) [0].tolist() ))
 
 
