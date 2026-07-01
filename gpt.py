@@ -23,6 +23,7 @@ print( encode("ayush pakhale"))
 print(decode(encode("ayush pakhale")))
 # let me commit someemthinh
 
+#DATA LOADING .....
 #lts not enode the entire datset and store it into torch.tensor
 import torch 
 data = torch.tensor(encode(text) , dtype = torch.long)
@@ -49,6 +50,7 @@ torch.manual_seed(1337)
 batch_size  = 4 # how many parallel sequneces will we process altogether at once
 block_size = 8  # what is the maximum context length for predictions 
 
+#DATA LOADING.....
 def get_batch(split):
     data = train_data if split == "train" else val_data
     ix = torch.randint(len(data)-block_size,(batch_size,))
@@ -111,10 +113,8 @@ class Bigramlanguagemodel(nn.Module):
             idx = torch.cat((idx,idx_next) , dim = 1) # (B , T+1)
         return idx    
 
-
-        
-
-        
+     
+     
 m = Bigramlanguagemodel(vocab_size)
 logits,loss = m(xb,yb) # this is same as out = m.forward(xb,yb)
 print(logits.shape)
@@ -122,6 +122,26 @@ print(loss)
 
 idx = torch.zeros((1,1) , dtype = torch.long )
 
-print(decode(m.generate(idx = torch.zeros((1,1),dtype=torch.long) , max_new_tokens = 100) [0].tolist() ))
+print(decode(m.generate(idx = torch.zeros((1,1),dtype=torch.long) , max_new_tokens = 400) [0].tolist() ))
+
+#create a pytorch optimizer
+optimizer = torch.optim.AdamW(m.parameters() , lr = 1e-3)
+
+batch_size = 32
+for steps in range(10000):
+
+    #sample a batch of data
+    xb,yb = get_batch("train")
+
+    #evaluate the loss
+    logits , loss = m(xb,yb)
+    optimizer.zero_grad(set_to_none = True )
+    loss.backward()
+    optimizer.step()
+
+    print(loss.item())
+
+
+print(decode(m.generate(idx = torch.zeros((1,1),dtype=torch.long) , max_new_tokens = 500) [0].tolist() ))
 
 
