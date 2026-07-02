@@ -92,7 +92,7 @@ class BigramLanguageModel(nn.Module):
             # sample from the distribution
             idx_next = torch.multinomial(probs, num_samples=1) # (B, 1)
             # append sampled index to the running sequence
-            idx = torch.cat((idx, idx_next), dim=1) # (B, T+1)
+            idx = torch.cat((idx, idx_next), dim=1) # (B, T+1) 
         return idx
 
 model = BigramLanguageModel(vocab_size)
@@ -120,4 +120,6 @@ for iter in range(max_iters):
 # generate from the model
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
 print(decode(m.generate(context, max_new_tokens=500)[0].tolist()))
+
+
 
