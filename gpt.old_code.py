@@ -142,6 +142,6 @@ for steps in range(10000):
     print(loss.item())
 
 
-print(decode(m.generate(idx = torch.zeros((1,1),dtype=torch.long) , max_new_tokens = 500) [0].tolist() ))
+print(decode(m.generate(idx = torch.zeros((1,1),dtype=torch.long) , max_new_tokens = 400) [0].tolist() ))
 
 
